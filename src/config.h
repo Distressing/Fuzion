@@ -19,3 +19,4 @@ std::vector<std::string> GetConfigs();
 
 std::string GetConfigDirectory();
 std::string GetGhConfigDirectory();
+std::string GetResourcesDirectory();

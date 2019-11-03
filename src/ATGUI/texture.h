@@ -1,10 +1,27 @@
 #pragma once
 
 #include "../interfaces.h"
+#include "../Utils/lodepng.h"
+#include "../Utils/xorstring.h"
+#include <iostream>
 
 class Texture
 {
 public:
+
+		unsigned char* ldImg(const char* filename, int w, int h)
+		{
+			std::vector<unsigned char> image;
+			unsigned width, height;
+			width = w;
+			height = h;
+			unsigned error = lodepng::decode(image, width, height, filename);
+			if ( error ) std::cout << "decoder error " << error << ": " << lodepng_error_text ( error ) << std::endl;
+			unsigned char* a = new unsigned char[image.size()];
+			std::copy(image.begin(), image.end(), a);
+			image.clear();
+			return a;
+		}
 
         Texture(const unsigned char* data, const unsigned int& width, const unsigned int& height)
             : m_width(width), m_height(height), m_bg(255, 255, 255, 255), m_valid(false)
@@ -12,7 +29,8 @@ public:
                 m_iTexture = surface->CreateNewTextureID(true);
                 if (!m_iTexture)
                         return;
-                surface->DrawSetTextureRGBA(m_iTexture, data, width, height);
+				const unsigned char* converted_data = ldImg(data, width, height);
+                surface->DrawSetTextureRGBA(m_iTexture, converted_data, width, height);
                 m_valid = true;
         }
 

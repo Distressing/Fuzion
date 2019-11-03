@@ -10,6 +10,7 @@
 #include "../Utils/entity.h"
 #include "../Utils/xorstring.h"
 #include "../Hooks/hooks.h"
+#include "../config.h"
 
 #include "../ATGUI/texture.h"
 #include "../Resources/tux.h"
@@ -17,6 +18,7 @@
 #include <climits>
 #include <deque>
 #include <mutex>
+#include <sstream>
 
 bool Settings::ESP::enabled = false;
 ButtonCode_t Settings::ESP::key = ButtonCode_t::KEY_Z;
@@ -568,11 +570,13 @@ static void DrawBox( ImColor color, int x, int y, int w, int h, C_BaseEntity* en
 
 static void DrawSprite( int x, int y, int w, int h, C_BaseEntity* entity ){
 	if ( Settings::ESP::Sprite::type == SpriteType::SPRITE_TUX ) {
-		static Texture sprite(tux_rgba, tux_width, tux_height);
+		std::ostringstream path;
+		path << GetResourcesDirectory() << "/tux.png";
+		const char* _pictureFile = path.str().c_str();		
+		static Texture sprite(_pictureFile, tux_width, tux_height);
 
 		sprite.Draw(x, y, ((float)h/tux_height)*tux_width, h);
 	}
-	// TODO: Handle other sprites
 }
 
 static void DrawEntity( C_BaseEntity* entity, const char* string, ImColor color ) {
