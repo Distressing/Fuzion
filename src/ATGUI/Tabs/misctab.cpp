@@ -19,6 +19,8 @@
 #include "../../Hacks/valvedscheck.h"
 #include "../../Hacks/profilechanger.h"
 
+#pragma GCC diagnostic ignored "-Wformat-security"
+
 static char nickname[127] = "";
 static char weapon[50] = "";
 
