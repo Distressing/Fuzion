@@ -107,3 +107,14 @@ std::string GetGhConfigDirectory()
 
     return directory.str();
 }
+
+std::string GetResourcesDirectory()
+{
+    std::ostringstream directory;
+    directory << getenv(XORSTR("HOME")) << XORSTR("/Fuzion/src/Resources");
+
+    if (!DoesDirectoryExist(directory.str().c_str()))
+	    mkdir(directory.str().c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+
+    return directory.str();
+}
